@@ -24,7 +24,6 @@ Start the docker instance and then point freqtrade to it, rate limit can be disa
         },
         "ccxt_async_config": {
             "enableRateLimit": false
-        },
-        "pair_whitelist": []
+        }
     }
 ```
