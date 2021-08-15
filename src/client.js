@@ -51,7 +51,7 @@ class Client {
             this.subscribe(symbol, interval);
         }
         while (!data || data[data.length - 1][6] <= Date.now()) {
-            await new Promise(r => setTimeout(r, 10));
+            await new Promise(r => setTimeout(r, 20));
             data = this.klines[symbol + interval];
         }
         return data;

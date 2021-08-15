@@ -13,12 +13,7 @@ Start the docker instance and then point freqtrade to it, rate limit can be disa
             "enableRateLimit": false,
             "urls": {
                 "api": {
-                    "wapi": "http://127.0.0.1:8080/wapi/v3",
-                    "sapi": "http://127.0.0.1:8080/sapi/v1",
-                    "public": "http://127.0.0.1:8080/api/v3",
-                    "private": "http://127.0.0.1:8080/api/v3",
-                    "v3": "http://127.0.0.1:8080/api/v3",
-                    "v1": "http://127.0.0.1:8080/api/v1"
+                    "public": "http://127.0.0.1:8080/api/v3"
                 }
             }
         },
