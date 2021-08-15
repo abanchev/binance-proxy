@@ -1,0 +1,8 @@
+---
+version: '3'
+services:
+  proxy:
+    build: .
+    container_name: binance-proxy
+    restart: unless-stopped
+    network_mode: host
