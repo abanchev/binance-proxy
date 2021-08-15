@@ -24,6 +24,7 @@ class Client {
                 for (let openTime of Object.keys(chart)) {
                     let item = chart[openTime];
                     openTime = parseInt(openTime);
+                    let closeTime = openTime + timeDiff - 1;
                     let quoteAssetVolume = parseFloat(item.volume) / ((parseFloat(item.open) + parseFloat(item.close)) / 2);
                     const frame = [
                         openTime,
@@ -32,7 +33,7 @@ class Client {
                         item.low,
                         item.close,
                         item.volume,
-                        openTime + timeDiff - 1,
+                        closeTime,
                         quoteAssetVolume.toString(),
                         100,
                         (quoteAssetVolume / 2).toString(),
@@ -45,13 +46,15 @@ class Client {
         }
     }
     async getCandles(symbol, interval) {
-        if (!this.klines[symbol + interval]) {
+        let data = this.klines[symbol + interval];
+        if (!data) {
             this.subscribe(symbol, interval);
-            while (!this.klines[symbol + interval]) {
-                await new Promise(r => setTimeout(r, 10));
-            }
         }
-        return this.klines[symbol + interval];
+        while (!data || data[data.length - 1][6] <= Date.now()) {
+            await new Promise(r => setTimeout(r, 10));
+            data = this.klines[symbol + interval];
+        }
+        return data;
     }
 }
 
