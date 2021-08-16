@@ -1,5 +1,4 @@
 import Binance from 'node-binance-api';
-import FixedQueue from './misc/FixedQueue.js';
 
 class Client {
     client;
@@ -17,10 +16,8 @@ class Client {
 
             this.subscribed.push(symbol + interval);
             this.client.websockets.chart(symbol, interval, (symbol, interval, chart) => {
-                if (!this.klines[symbol + interval]) {
-                    this.klines[symbol + interval] = new FixedQueue(1000, []);
-                }
                 let timeDiff = Math.abs(Object.keys(chart)[0] - Object.keys(chart)[1]);
+                let newFrames = [];
                 for (let openTime of Object.keys(chart)) {
                     let item = chart[openTime];
                     openTime = parseInt(openTime);
@@ -39,9 +36,9 @@ class Client {
                         (quoteAssetVolume / 2).toString(),
                         (quoteAssetVolume / 2).toString(),
                         "1.1"];
-                    this.klines[symbol + interval].push(frame);
-
+                    newFrames.push(frame);
                 }
+                this.klines[symbol + interval] = newFrames;
             }, 1000);
         }
     }
