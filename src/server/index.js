@@ -13,7 +13,7 @@ const getServer = async (client) => {
     app.use(express.json());
 
     router.get('/api/v3/klines', async (req, res) => {
-        res.send(await client.getCandles(req.query.symbol, req.query.interval));
+        client.getCandles(req.query.symbol, req.query.interval).then(result => res.send(result))
     });
 
     router.use(createProxyMiddleware({

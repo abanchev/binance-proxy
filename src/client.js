@@ -1,4 +1,5 @@
 import Binance from 'node-binance-api';
+import fetch from 'node-fetch';
 
 class Client {
     client;
@@ -46,12 +47,15 @@ class Client {
         let data = this.klines[symbol + interval];
         if (!data) {
             this.subscribe(symbol, interval);
+            while (!data || data.length === 0) {
+                await new Promise(r => setTimeout(r, 100));
+                data = this.klines[symbol + interval];
+            }
         }
-        while (!data || data.length === 0 || !data[data.length - 1] || data[data.length - 1][6] <= Date.now()) {
-            await new Promise(r => setTimeout(r, 20));
-            data = this.klines[symbol + interval];
+        if (!data[data.length - 1] || data[data.length - 1][6] <= Date.now()) {
+            return fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}`).then(resp => resp.json());
         }
-        return data;
+        return this.klines[symbol + interval];
     }
 }
 
