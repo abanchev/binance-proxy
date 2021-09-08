@@ -3,6 +3,8 @@
 Long story short a binance proxy for freqtrade that is using websockets to maintain candlestick/klines data in memory, thus having great performance and reducing the amount of API calls to the Binance api.
 All other calls are proxied as usual.
 
+![Schematics](proxy_scheme.png)
+
 Start the docker instance and then point freqtrade to it, rate limit can be disabled:
 ```
     "exchange": {
